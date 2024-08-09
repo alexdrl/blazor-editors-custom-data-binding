@@ -11,6 +11,11 @@
 <DxComboBox TData=WebApiLookup 
             TValue=System.String
             CustomData="@LoadCustomData"
+            ListRenderMode="ListRenderMode.Virtual"
+            DropDownTriggerMode="DropDownTriggerMode.Click"
+            SearchMode="ListSearchMode.AutoSearch"
+            SearchFilterCondition="ListSearchFilterCondition.Contains"
+            SearchTextParseMode="ListSearchTextParseMode.GroupWordsByAnd"
             @bind-Value="@Value"
             TextFieldName="Text" >
 </DxComboBox>
@@ -19,7 +24,10 @@
     string Value { get; set; }
     [Inject] protected HttpClient Client { get; set; }
 
-    protected Task<LoadResult> LoadCustomData(DataSourceLoadOptionsBase options, CancellationToken cancellationToken) {
-        return CustomDataHelper.LoadCustomData(Client, options, cancellationToken);
+    protected async Task<LoadResult> LoadCustomData(DataSourceLoadOptionsBase options, CancellationToken cancellationToken) 
+    {
+        await Task.Delay(TimeSpan.FromMilliseconds(300));
+
+        return await CustomDataHelper.LoadCustomData(Client, options, cancellationToken);
     }
 }
